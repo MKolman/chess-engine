@@ -24,14 +24,13 @@ int parse_number(char* argv) {
 std::pair<int, int> parse_cmd_args(int argc, char* argv[]) {
     int white_depth = 0, black_depth = 0;  // Human players
     for (int i = 1; i < argc; i++) {
-        std::cout << "'" << argv[i] << "'  <--\n";
         if (strcmp(argv[i], "--help") == 0) {
             std::cout << "This is an elementary chess engine.\n"
                 << "Default playstyle is human vs human.\n\n"
                 << "--help \t\t\t Print this help\n"
                 << "--white, -w [depth=3] \t Computer plays white\n"
                 << "--black, -b [depth=3] \t Computer plays black\n\n"
-                << "Example: ./play --black --white 2\n";
+                << "Example: " << argv[0] << " --black --white 2\n";
             return std::make_pair(-1, -1);
         } else if (strcmp(argv[i], "--white") == 0) {
             white_depth = 3;
@@ -85,7 +84,7 @@ int main(int argc, char* argv[]) {
             chess.make_move(best_move[0]);
         }
     }
-    switch(game.state) {
+    switch(chess.state) {
         case Chess::WHITE_WIN:
             std::cout << "White won!\n";
             break;
@@ -96,6 +95,6 @@ int main(int argc, char* argv[]) {
             std::cout << "It's a draw!\n";
             break;
         default:
-            std::cout << "What happened? The score is " << game.state << "?\n";
+            std::cout << "What happened? The score is " << chess.state << "?\n";
     }
 }
