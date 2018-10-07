@@ -45,6 +45,22 @@ class Chess {
         }
         return result;
     }
+    bool is_mate() {
+        for (const Move& first_move : get_all_moves()) {
+            if (make_move(first_move)) {
+                bool can_take_king = false;
+                for (const Move& second_move : get_all_moves()) {
+                    if (second_move.takes.type == Piece::K){
+                        can_take_king = true;
+                        break;
+                    }
+                }
+                reverse_move();
+                if (can_take_king == false) return false;
+            }
+        }
+        return true;
+    }
     void get_single_moves(std::vector<Move>& result, int i, int j) {
         switch (board[i][j].type) {
             case Piece::K: move_generator.get_king_moves(result, i, j); break;
