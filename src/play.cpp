@@ -83,7 +83,24 @@ int main(int argc, char* argv[]) {
             std::cout << "Moving best move: " << best_move[0] << std::endl;
             chess.make_move(best_move[0]);
         }
+
+        if (chess.is_mate()) {
+            if (chess.is_check()) {
+                if (chess.moves.size() % 2 == 0) {
+                    chess.state = Chess::WHITE_WIN;
+                    std::cout << "chess.state = Chess::WHITE_WIN;\n";
+                } else {
+                    chess.state = Chess::BLACK_WIN;
+                    std::cout << "chess.state = Chess::BLACK_WIN;\n";
+                }
+            } else {
+                chess.state = Chess::DRAW;
+                std::cout << "chess.state = Chess::DRAW;\n";
+            }
+        }
     }
+
+    std::cout << chess;
     switch(chess.state) {
         case Chess::WHITE_WIN:
             std::cout << "White won!\n";

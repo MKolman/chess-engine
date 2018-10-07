@@ -32,14 +32,17 @@ class Chess {
             board[7][i] = Piece(order[i], false);
         }
     }
-    std::vector<Move> get_all_moves() {
+    std::vector<Move> get_all_moves(int is_whites_turn=-1) {
         std::vector<Move> result;
         move_generator = MoveGenerator<Chess>(this);
         if (state != PLAY) return result;
+        if (is_whites_turn != 0 && is_whites_turn != 1) {
+            is_whites_turn = moves.size() % 2 == 0;
+        }
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (moves.size() % 2 == board[i][j].is_white) continue;
+                if (is_whites_turn != board[i][j].is_white) continue;
                 get_single_moves(result, i, j);
             }
         }
@@ -60,6 +63,12 @@ class Chess {
             }
         }
         return true;
+    }
+    bool is_check() {
+        for (const Move& first_move : get_all_moves(moves.size() % 2)) {
+            if (first_move.takes.type == Piece::K) return true;
+        }
+        return false;
     }
     void get_single_moves(std::vector<Move>& result, int i, int j) {
         switch (board[i][j].type) {
